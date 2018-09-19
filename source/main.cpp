@@ -23,6 +23,10 @@ struct Player
 		playerID = id;
 		memory = mem;
 	}
+    ~Player()
+    {
+        delete memory;
+    }
 };
 
 // 前方宣言
@@ -45,8 +49,8 @@ int main(void)
 	// Player系の処理は継承を使ってClass化する
 	// --------------------------------
 	int playerNum = 2;
-	Player player1(PlayMode::Auto, 0, new NPCLogic::Memory(10, 5));
-	Player player2(PlayMode::Auto, 0, new NPCLogic::Memory(10, 5));
+	Player player1(PlayMode::Auto, 0, new NPCLogic::Memory(15, 10));
+	Player player2(PlayMode::Auto, 0, new NPCLogic::Memory(15, 10));
 
 	Player* entrant[2];
 	entrant[0] = &player1;
@@ -71,7 +75,7 @@ int main(void)
 				CardSelectWithAuto(player);
 			}
 			// カードを確認して継続or終了
-		} while (GameLogic::ConfirmMatchAndBind(1));
+		} while (GameLogic::ConfirmMatchAndBind(player->playerID) && !GameLogic::CheckGameEnd());
 
 		// カードを閉じる
 		GameLogic::Close();
@@ -81,6 +85,7 @@ int main(void)
 	}
 
 	system("pause");
+    GameLogic::Finalize();
 	return 0;
 }
 
@@ -135,8 +140,6 @@ void CardSelectWithAuto(Player* player)
 		isSuccess = true;
 		isSuccess &= GameLogic::Open(GameLogic::ConvertIndex(w1, h1));
 		isSuccess &= GameLogic::Open(GameLogic::ConvertIndex(w2, h2));
-		// カード情報の記憶を忘れる
-		NPCLogic::Oblivion(player->memory, 0.3f);
 	}
 
 	if(isSuccess == false)
