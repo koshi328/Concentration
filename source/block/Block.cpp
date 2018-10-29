@@ -4,6 +4,7 @@
 
 Block::Block()
 {
+    _colorCode = nullptr;
 }
 
 Block::~Block()
