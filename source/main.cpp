@@ -33,7 +33,8 @@ struct Player
 void CardSelectWithManual(Player* player);
 void CardSelectWithAuto(Player* player);
 
-int main(void)
+// DISABLE__ を付けてエントリーポイントから排除
+int DISABLE__main(void)
 {
 	// --------------------------------
 	// 初期設定
